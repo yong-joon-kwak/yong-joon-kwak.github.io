@@ -1,8 +1,9 @@
 ---
 title: '블로그 제작 실패기'
-description: 'Astro 블로그 제작기'
+description: 'Vue 블로그 제작 실패기'
 pubDate: 'Jul 13 2025'
 heroImage: '../../assets/blog-placeholder-3.jpg'
+tags: ['Blog', 'Vue', 'Vite']
 ---
 
 ## 주의사항

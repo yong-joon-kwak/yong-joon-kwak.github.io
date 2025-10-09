@@ -2,7 +2,7 @@
 title: "CI3 VS Symfony"
 description: "PHP 개발프레임워크인 Codeigniter3 와 Symfony의 비교"
 pubDate: "Aug 24 2025"
-heroImage: "../../assets/blog-placeholder-5jpg"
+heroImage: '../../assets/blog-placeholder-5.jpg'
 tags: ["PHP", "Codeigniter3", "Symfony"]
 ---
 

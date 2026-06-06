@@ -2,7 +2,7 @@
 title: 'Symfony개발시 API 문서 간단하게 만들어보기'
 description: 'nelmio/api-doc-bundle을 활용해 문서화를 해보자'
 pubDate: 'Jun 06 2026'
-heroImage: '../../assets/blog-placeholder-3.jpg'
+heroImage: '../../assets/images/nelmio-api-doc/thumbnail.jpg'
 tags: ['PHP', 'Symfony', 'Swagger']
 ---
 

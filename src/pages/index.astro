@@ -1,5 +1,7 @@
 ---
 import BaseHead from "../components/BaseHead.astro";
+import CustomHeadScripts from "../components/CustomHeadScripts.astro";
+import CustomBodyScripts from "../components/CustomBodyScripts.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
@@ -23,6 +25,7 @@ const tags = new Set(
 <html lang="ko">
   <head>
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <CustomHeadScripts />
     <style>
       main {
         width: 1200px;
@@ -174,6 +177,7 @@ const tags = new Set(
     </style>
   </head>
   <body>
+    <CustomBodyScripts />
     <Header />
     <main>
       <div class="content-wrapper">

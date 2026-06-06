@@ -1,0 +1,19 @@
+---
+const googleTagManagerId = import.meta.env.PUBLIC_GOOGLE_TAG_MANAGER_ID;
+const googleTagManagerNoScriptSrc = googleTagManagerId
+	? `https://www.googletagmanager.com/ns.html?id=${encodeURIComponent(googleTagManagerId)}`
+	: '';
+---
+
+{
+	googleTagManagerId && (
+		<noscript>
+			<iframe
+				src={googleTagManagerNoScriptSrc}
+				height="0"
+				width="0"
+				style="display:none;visibility:hidden"
+			></iframe>
+		</noscript>
+	)
+}

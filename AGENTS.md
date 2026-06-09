@@ -37,3 +37,4 @@ Astro 기반 정적 사이트로, `master` 브랜치 push 시 GitHub Actions를 
 | [docs/project-structure.md](docs/project-structure.md) | 파일 구조 및 각 파일의 역할 |
 | [docs/workflow.md](docs/workflow.md) | 주요 작업 흐름 및 명령어 |
 | [docs/component-guide.md](docs/component-guide.md) | 컴포넌트·레이아웃 수정 지침 |
+| [DESIGN.md](DESIGN.md) | 디자인 토큰, 방향성, 컴포넌트 사양 및 구현 체크리스트 |

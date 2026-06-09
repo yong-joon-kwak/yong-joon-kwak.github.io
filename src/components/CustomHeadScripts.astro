@@ -9,7 +9,23 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer',${JSON.stringify(googleTagManagerId)});`
 	: '';
+
+const initializeThemeScript = `(function() {
+  var storageKey = 'theme';
+  var root = document.documentElement;
+  try {
+    var storedTheme = localStorage.getItem(storageKey);
+    var systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var theme = storedTheme === 'light' || storedTheme === 'dark'
+      ? storedTheme
+      : (systemPrefersDark ? 'dark' : 'light');
+    root.setAttribute('data-theme', theme);
+  } catch (error) {
+    root.setAttribute('data-theme', 'light');
+  }
+})();`;
 ---
 
+<script is:inline set:html={initializeThemeScript} />
 {googleSiteVerification && <meta name="google-site-verification" content={googleSiteVerification} />}
 {googleTagManagerId && <script is:inline set:html={googleTagManagerScript} />}

@@ -4,19 +4,50 @@
   License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
  */
 @import 'github-markdown-css/github-markdown-light.css';
-/* 다크모드가 필요하면 github-markdown-dark.css 도 있습니다 */
-
-:root {
+/* Theme tokens */
+:root,
+html[data-theme='light'] {
+	--bg: #ffffff;
+	--bg-secondary: #f4f4f8;
+	--surface: #ffffff;
+	--surface-container: #f0f2f7;
+	--surface-container-high: #e5e9f0;
+	--text: #0f1219;
+	--text-muted: #60739f;
+	--outline: #c8cfe0;
+	--outline-variant: #e5e9f0;
 	--accent: #2337ff;
-	--accent-dark: #000d8a;
-	--black: 15, 18, 25;
-	--gray: 96, 115, 159;
-	--gray-light: 229, 233, 240;
-	--gray-dark: 34, 41, 57;
-	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
-	--box-shadow:
-		0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
-		0 16px 32px rgba(var(--gray), 33%);
+	--on-accent: #ffffff;
+	--accent-container: #e8eaff;
+	--on-accent-container: #000d8a;
+	--code-bg: #e5e9f0;
+	--header-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+	--card-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+	--hero-shadow: 0 2px 6px rgba(96, 115, 159, 0.25), 0 8px 24px rgba(96, 115, 159, 0.33);
+}
+
+html[data-theme='dark'] {
+	--bg: #0f1117;
+	--bg-secondary: #1a1d27;
+	--surface: #1a1d27;
+	--surface-container: #222536;
+	--surface-container-high: #2d3148;
+	--text: #e2e8f0;
+	--text-muted: #718096;
+	--outline: #2d3748;
+	--outline-variant: #1e2535;
+	--accent: #6b8cff;
+	--on-accent: #000d8a;
+	--accent-container: #1a2566;
+	--on-accent-container: #c5cfff;
+	--code-bg: #1e2535;
+	--header-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+	--card-shadow: none;
+	--hero-shadow: none;
+}
+
+* {
+	box-sizing: border-box;
 }
 @font-face {
 	font-family: 'Atkinson';
@@ -37,19 +68,19 @@ body {
 	margin: 0;
 	padding: 0;
 	text-align: left;
-	background: linear-gradient(var(--gray-gradient)) no-repeat;
-	background-size: 100% 600px;
+	background: var(--bg);
 	word-wrap: break-word;
 	overflow-wrap: break-word;
-	color: rgb(var(--gray-dark));
+	color: var(--text);
 	font-size: 16px;
-	line-height: 1.7;
+	line-height: 1.8;
+	transition: color 0.2s ease, background-color 0.2s ease;
 }
 main {
 	width: 720px;
-	max-width: calc(100% - 2em);
+	max-width: calc(100% - 40px);
 	margin: auto;
-	padding: 3em 1em;
+	padding: 3em 20px;
 }
 h1,
 h2,
@@ -58,8 +89,9 @@ h4,
 h5,
 h6 {
 	margin: 0 0 0.5rem 0;
-	color: rgb(var(--black));
+	color: var(--text);
 	line-height: 1.2;
+	transition: color 0.2s ease;
 }
 h1 {
 	font-size: 3.052em;
@@ -82,6 +114,7 @@ b {
 }
 a {
 	color: var(--accent);
+	transition: color 0.2s ease;
 }
 a:hover {
 	color: var(--accent);
@@ -105,16 +138,18 @@ table {
 img {
 	max-width: 100%;
 	height: auto;
-	border-radius: 8px;
+	border-radius: 1rem;
 }
 code {
 	padding: 2px 5px;
-	background-color: rgb(var(--gray-light));
-	border-radius: 2px;
+	background-color: var(--code-bg);
+	border-radius: 0.375rem;
 }
 pre {
 	padding: 1.5em;
-	border-radius: 8px;
+	border-radius: 0.75rem;
+	overflow-x: auto;
+	background: var(--code-bg);
 }
 pre > code {
 	all: unset;
@@ -127,14 +162,100 @@ blockquote {
 }
 hr {
 	border: none;
-	border-top: 1px solid rgb(var(--gray-light));
+	border-top: 1px solid var(--outline-variant);
+}
+
+button {
+	font: inherit;
+}
+
+.markdown-body,
+.markdown-body pre,
+.markdown-body code {
+	color: inherit;
+	background-color: transparent;
+}
+
+.markdown-body pre {
+	background-color: var(--code-bg);
+}
+
+.markdown-body code:not(pre code) {
+	background-color: var(--code-bg);
+}
+
+html[data-theme='dark'] .markdown-body {
+	--color-prettylights-syntax-comment: #8b949e;
+	--color-prettylights-syntax-constant: #79c0ff;
+	--color-prettylights-syntax-entity: #d2a8ff;
+	--color-prettylights-syntax-storage-modifier-import: #c9d1d9;
+	--color-prettylights-syntax-entity-tag: #7ee787;
+	--color-prettylights-syntax-keyword: #ff7b72;
+	--color-prettylights-syntax-string: #a5d6ff;
+	--color-prettylights-syntax-variable: #ffa657;
+	--color-prettylights-syntax-brackethighlighter-unmatched: #f85149;
+	--color-prettylights-syntax-invalid-illegal-text: #f0f6fc;
+	--color-prettylights-syntax-invalid-illegal-bg: #8e1519;
+	--color-prettylights-syntax-carriage-return-text: #f0f6fc;
+	--color-prettylights-syntax-carriage-return-bg: #b62324;
+	--color-prettylights-syntax-string-regexp: #7ee787;
+	--color-prettylights-syntax-markup-list: #f2cc60;
+	--color-prettylights-syntax-markup-heading: #1f6feb;
+	--color-prettylights-syntax-markup-italic: #c9d1d9;
+	--color-prettylights-syntax-markup-bold: #c9d1d9;
+	--color-prettylights-syntax-markup-deleted-text: #ffdcd7;
+	--color-prettylights-syntax-markup-deleted-bg: #67060c;
+	--color-prettylights-syntax-markup-inserted-text: #aff5b4;
+	--color-prettylights-syntax-markup-inserted-bg: #033a16;
+	--color-prettylights-syntax-markup-changed-text: #ffdfb6;
+	--color-prettylights-syntax-markup-changed-bg: #5a1e02;
+	--color-prettylights-syntax-markup-ignored-text: #c9d1d9;
+	--color-prettylights-syntax-markup-ignored-bg: #1158c7;
+	--color-prettylights-syntax-meta-diff-range: #d2a8ff;
+	--color-prettylights-syntax-brackethighlighter-angle: #8b949e;
+	--color-prettylights-syntax-sublimelinter-gutter-mark: #484f58;
+	--color-prettylights-syntax-constant-other-reference-link: #a5d6ff;
+
+	--color-fg-default: var(--text);
+	--color-canvas-default: transparent;
+	--color-canvas-subtle: var(--surface-container);
+	--color-border-default: var(--outline-variant);
+	--color-neutral-muted: rgba(110, 118, 129, 0.4);
+	--color-accent-fg: var(--accent);
+	--color-accent-emphasis: var(--accent);
+	--color-attention-subtle: rgba(187, 128, 9, 0.15);
+}
+
+@media (max-width: 768px) {
+	main {
+		max-width: calc(100% - 40px);
+		padding: 2em 20px;
+	}
+
+	body {
+		font-size: 17px;
+		line-height: 1.85;
+	}
+
+	h1 {
+		font-size: 1.6rem;
+		line-height: 1.3;
+		letter-spacing: -0.01em;
+	}
+
+	h2 {
+		font-size: 1.25rem;
+		line-height: 1.35;
+	}
+
+	h3 {
+		font-size: 1.1rem;
+		line-height: 1.4;
+	}
 }
 @media (max-width: 720px) {
-	body {
-		font-size: 18px;
-	}
 	main {
-		padding: 1em;
+		padding: 1.5em 20px;
 	}
 }
 

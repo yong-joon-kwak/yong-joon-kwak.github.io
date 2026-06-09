@@ -10,14 +10,14 @@ import FormattedDate from "../components/FormattedDate.astro";
 import { Image } from "astro:assets";
 
 const posts = (await getCollection("blog")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 
 const tags = new Set(
   posts
     .map((post) => post.data.tags)
     .filter((tag) => tag !== undefined)
-    .flat()
+    .flat(),
 );
 ---
 
@@ -51,7 +51,10 @@ const tags = new Set(
         background: var(--surface);
         border-radius: 16px;
         padding: 1.5rem;
-        transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease,
+        transition:
+          transform 0.2s ease,
+          background-color 0.2s ease,
+          border-color 0.2s ease,
           box-shadow 0.2s ease;
         border: 1px solid var(--outline-variant);
       }
@@ -125,13 +128,22 @@ const tags = new Set(
         font-size: 0.8rem;
         font-weight: 500;
         cursor: pointer;
-        transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        transition:
+          background-color 0.2s ease,
+          color 0.2s ease,
+          transform 0.2s ease;
       }
 
       .tag-button:hover {
         background-color: var(--accent-container);
         color: var(--on-accent-container);
         transform: translateY(-1px);
+      }
+
+      .tag-button.is-active {
+        background-color: var(--accent-container);
+        color: var(--on-accent-container);
+        border-color: var(--accent);
       }
 
       .post-tags {
@@ -226,14 +238,21 @@ const tags = new Set(
         <div class="tag-container">
           {
             Array.from(tags).map((tag) => (
-              <button class="tag-button">{tag}</button>
+              <button
+                type="button"
+                class="tag-button"
+                data-tag={tag}
+                aria-pressed="false"
+              >
+                {tag}
+              </button>
             ))
           }
         </div>
         <ul>
           {
             posts.map((post) => (
-              <li>
+              <li data-tags={JSON.stringify(post.data.tags ?? [])}>
                 <a href={`/${post.id}/`}>
                   {post.data.heroImage && (
                     <Image
@@ -243,7 +262,12 @@ const tags = new Set(
                       alt=""
                     />
                   )}
-                  <div class:list={['post-content', { 'no-image': !post.data.heroImage }]}>
+                  <div
+                    class:list={[
+                      "post-content",
+                      { "no-image": !post.data.heroImage },
+                    ]}
+                  >
                     <h4 class="title">{post.data.title}</h4>
                     <p class="date">
                       <FormattedDate date={post.data.pubDate} />
@@ -265,5 +289,65 @@ const tags = new Set(
       </div>
     </main>
     <Footer />
+    <script>
+      const tagButtons = Array.from(
+        document.querySelectorAll<HTMLButtonElement>(".tag-button"),
+      );
+      const postItems = Array.from(
+        document.querySelectorAll<HTMLLIElement>("main ul li"),
+      );
+      const selectedTags = new Set();
+
+      const getItemTags = (item: HTMLLIElement) => {
+        const rawTags = item.dataset.tags;
+        if (!rawTags) return [];
+
+        try {
+          return JSON.parse(rawTags);
+        } catch (_error) {
+          return [];
+        }
+      };
+
+      const updatePosts = () => {
+        if (selectedTags.size === 0) {
+          postItems.forEach((item) => {
+            item.style.display = "";
+          });
+          return;
+        }
+
+        postItems.forEach((item) => {
+          const itemTags = getItemTags(item);
+          const isMatched = Array.from(selectedTags).some((tag) =>
+            itemTags.includes(tag),
+          );
+          item.style.display = isMatched ? "" : "none";
+        });
+      };
+
+      const updateButtonState = (button: HTMLButtonElement) => {
+        const tag = button.dataset.tag;
+        const isSelected = Boolean(tag) && selectedTags.has(tag);
+        button.classList.toggle("is-active", isSelected);
+        button.setAttribute("aria-pressed", String(isSelected));
+      };
+
+      tagButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const tag = button.dataset.tag;
+          if (!tag) return;
+
+          if (selectedTags.has(tag)) {
+            selectedTags.delete(tag);
+          } else {
+            selectedTags.add(tag);
+          }
+
+          tagButtons.forEach(updateButtonState);
+          updatePosts();
+        });
+      });
+    </script>
   </body>
 </html>

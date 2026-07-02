@@ -1,0 +1,214 @@
+---
+import BaseHead from "../../components/BaseHead.astro";
+import CustomHeadScripts from "../../components/CustomHeadScripts.astro";
+import CustomBodyScripts from "../../components/CustomBodyScripts.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import FormattedDate from "../../components/FormattedDate.astro";
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import { SITE_TITLE } from "../../consts";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  const tagSet = new Set(posts.flatMap((post) => post.data.tags ?? []));
+
+  return Array.from(tagSet).map((tag) => {
+    const taggedPosts = posts
+      .filter((post) => post.data.tags?.includes(tag))
+      .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+    return { params: { tag }, props: { tag, posts: taggedPosts } };
+  });
+}
+
+const { tag, posts } = Astro.props;
+const pageTitle = `${tag} 글 모음 (${posts.length}) | ${SITE_TITLE}`;
+const pageDescription = `'${tag}' 태그가 달린 글 ${posts.length}개 모음. 곽용준의 개발 블로그에서 ${tag} 관련 기록과 경험을 확인하세요.`;
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <BaseHead title={pageTitle} description={pageDescription} />
+    <CustomHeadScripts />
+    <style>
+      main {
+        width: min(1200px, calc(100% - 40px));
+        margin: 0 auto;
+        padding: 2rem 20px 3rem;
+        min-height: calc(100vh - 140px);
+      }
+
+      .tag-header {
+        margin-bottom: 2rem;
+      }
+
+      .tag-eyebrow {
+        margin: 0 0 0.35rem;
+        font-size: 0.8rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+      }
+
+      .tag-title {
+        margin: 0;
+        font-size: 2rem;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+        color: var(--text);
+      }
+
+      .tag-title .hash {
+        color: var(--accent);
+      }
+
+      .back-link {
+        display: inline-block;
+        margin-top: 1rem;
+        font-size: 0.9rem;
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      .back-link:hover {
+        text-decoration: underline;
+      }
+
+      ul {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      ul li {
+        background: var(--surface);
+        border-radius: 16px;
+        padding: 1.5rem;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+        border: 1px solid var(--outline-variant);
+      }
+
+      ul li:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--card-shadow);
+      }
+
+      ul li a {
+        display: block;
+        text-decoration: none;
+      }
+
+      ul li img {
+        margin-bottom: 1rem;
+        border-radius: 12px;
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+
+      .post-content {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .title {
+        margin: 0;
+        color: var(--text);
+        line-height: 1.4;
+        font-size: 1.35rem;
+        font-weight: 600;
+      }
+
+      ul li a:hover .title {
+        color: var(--accent);
+      }
+
+      .date {
+        margin: 0;
+        color: var(--text-muted);
+        font-size: 0.8rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .description {
+        margin: 0;
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        line-height: 1.8;
+      }
+
+      @media (min-width: 769px) {
+        ul {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      @media (min-width: 769px) and (max-width: 1200px) {
+        ul {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 768px) {
+        main {
+          width: calc(100% - 40px);
+          padding: 1.5rem 20px 2.5rem;
+        }
+
+        .tag-title {
+          font-size: 1.6rem;
+        }
+
+        .title {
+          font-size: 1.2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <CustomBodyScripts />
+    <Header />
+    <main>
+      <div class="tag-header">
+        <p class="tag-eyebrow">Tag</p>
+        <h1 class="tag-title"><span class="hash">#</span>{tag}</h1>
+        <a class="back-link" href="/">← 전체 글 보기</a>
+      </div>
+      <ul>
+        {
+          posts.map((post) => (
+            <li>
+              <a href={`/${post.id}/`}>
+                {post.data.heroImage && (
+                  <Image
+                    width={720}
+                    height={200}
+                    src={post.data.heroImage}
+                    alt={`${post.data.title} 썸네일`}
+                  />
+                )}
+                <div class="post-content">
+                  <h2 class="title">{post.data.title}</h2>
+                  <p class="date">
+                    <FormattedDate date={post.data.pubDate} />
+                  </p>
+                  <p class="description">{post.data.description}</p>
+                </div>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </main>
+    <Footer />
+  </body>
+</html>

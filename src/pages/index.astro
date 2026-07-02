@@ -38,6 +38,18 @@ const tags = new Set(
         padding: 0.5rem 0;
       }
 
+      .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
       ul {
         display: grid;
         grid-template-columns: 1fr;
@@ -234,6 +246,9 @@ const tags = new Set(
     <CustomBodyScripts />
     <Header />
     <main>
+      <h1 class="visually-hidden">
+        곽용준 개발 블로그 — 백엔드·PHP·Symfony 개발 기록과 경험
+      </h1>
       <div class="content-wrapper">
         <div class="tag-container">
           {
@@ -268,7 +283,7 @@ const tags = new Set(
                       { "no-image": !post.data.heroImage },
                     ]}
                   >
-                    <h4 class="title">{post.data.title}</h4>
+                    <h2 class="title">{post.data.title}</h2>
                     <p class="date">
                       <FormattedDate date={post.data.pubDate} />
                     </p>

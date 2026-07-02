@@ -20,6 +20,7 @@ html[data-theme='light'] {
 	--on-accent: #ffffff;
 	--accent-container: #e8eaff;
 	--on-accent-container: #000d8a;
+	--success: #38a169;
 	--code-bg: #e5e9f0;
 	--header-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 	--card-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
@@ -40,6 +41,7 @@ html[data-theme='dark'] {
 	--on-accent: #000d8a;
 	--accent-container: #1a2566;
 	--on-accent-container: #c5cfff;
+	--success: #48bb78;
 	--code-bg: #1e2535;
 	--header-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 	--card-shadow: none;
@@ -182,6 +184,79 @@ button {
 
 .markdown-body code:not(pre code) {
 	background-color: var(--code-bg);
+}
+
+/* ── 본문 이미지: figure/figcaption (C) ──
+   hero 이미지와 분리된 스타일. 테두리로 레이어를 구분하는 디자인 원칙을 따라
+   무거운 그림자 대신 얇은 아웃라인 + 살짝 작은 라운드를 적용하고 캡션을 붙인다. */
+.markdown-body .post-figure {
+	margin: 2em 0;
+	text-align: center;
+}
+
+.markdown-body .post-figure img {
+	margin: 0 auto;
+	border-radius: 0.75rem;
+	border: 1px solid var(--outline-variant);
+}
+
+.markdown-body figcaption {
+	margin-top: 0.7em;
+	font-size: 0.85rem;
+	line-height: 1.5;
+	color: var(--text-muted);
+}
+
+/* ── 본문 리듬 (D) ──
+   github-markdown-css 기본값 위에 DESIGN.md 토큰 리듬을 덮어쓴다.
+   @import 뒤에 오므로 동일 특정도에서 이 규칙이 이긴다. */
+.markdown-body {
+	line-height: 1.8; /* github 기본 1.5 → DESIGN body 토큰과 일치 */
+}
+
+.prose p {
+	margin-bottom: 1.5em; /* 2em → 1.5em, 과한 문단 여백 축소 */
+}
+
+.markdown-body h2:not(:first-child) {
+	margin-top: 2.5em; /* 섹션 사이 호흡 확보 */
+}
+
+.markdown-body h3:not(:first-child) {
+	margin-top: 2em;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+	margin-bottom: 1.5em;
+}
+
+.markdown-body li + li {
+	margin-top: 0.4em;
+}
+
+.markdown-body blockquote {
+	margin: 1.75em 0;
+	padding: 0.8em 1.2em;
+	border-left: 4px solid var(--accent);
+	border-radius: 0 0.5rem 0.5rem 0;
+	background: var(--surface-container);
+	color: var(--text-muted);
+	font-size: inherit;
+}
+
+.markdown-body blockquote > :last-child {
+	margin-bottom: 0;
+}
+
+/* ── 코드블록 ──
+   astro-expressive-code 가 프레임, 언어 라벨, 복사 버튼과 테마 전환을 담당한다. */
+.markdown-body .expressive-code {
+	margin: 1.5em 0;
+}
+
+.markdown-body .expressive-code + .expressive-code {
+	margin-top: 1em;
 }
 
 html[data-theme='dark'] .markdown-body {

@@ -21,6 +21,7 @@ jobs:
         env:
           PUBLIC_GOOGLE_TAG_MANAGER_ID: ${{ vars.PUBLIC_GOOGLE_TAG_MANAGER_ID }}
           PUBLIC_GOOGLE_SITE_VERIFICATION: ${{ vars.PUBLIC_GOOGLE_SITE_VERIFICATION }}
+          PUBLIC_GOOGLE_AD_SENSE_ACCOUNT: ${{ vars.PUBLIC_GOOGLE_AD_SENSE_ACCOUNT }}
 
   deploy:
     needs: build

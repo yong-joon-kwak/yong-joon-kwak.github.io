@@ -1,14 +1,15 @@
 ---
 const googleTagManagerId = import.meta.env.PUBLIC_GOOGLE_TAG_MANAGER_ID;
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
+const googleAdSenseAccount = import.meta.env.PUBLIC_GOOGLE_AD_SENSE_ACCOUNT;
 
 const googleTagManagerScript = googleTagManagerId
-	? `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  ? `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer',${JSON.stringify(googleTagManagerId)});`
-	: '';
+  : "";
 
 const initializeThemeScript = `(function() {
   var storageKey = 'theme';
@@ -27,5 +28,14 @@ const initializeThemeScript = `(function() {
 ---
 
 <script is:inline set:html={initializeThemeScript} />
-{googleSiteVerification && <meta name="google-site-verification" content={googleSiteVerification} />}
+{
+  googleSiteVerification && (
+    <meta name="google-site-verification" content={googleSiteVerification} />
+  )
+}
 {googleTagManagerId && <script is:inline set:html={googleTagManagerScript} />}
+{
+  googleAdSenseAccount && (
+    <meta name="google-adsense-account" content={googleAdSenseAccount} />
+  )
+}

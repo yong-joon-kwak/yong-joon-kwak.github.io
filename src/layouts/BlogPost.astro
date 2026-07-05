@@ -6,6 +6,7 @@ import CustomBodyScripts from "../components/CustomBodyScripts.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import FormattedDate from "../components/FormattedDate.astro";
+import GoogleAdSenseDisplay from "../components/GoogleAdSenseDisplay.astro";
 import { Image } from "astro:assets";
 import { SITE_TITLE } from "../consts";
 
@@ -82,10 +83,34 @@ const jsonLd = {
         box-shadow: var(--hero-shadow);
       }
 
+      .post-layout {
+        display: grid;
+        grid-template-columns:
+          minmax(120px, 180px)
+          minmax(0, 720px)
+          minmax(120px, 180px);
+        gap: 2rem;
+        align-items: start;
+        justify-content: center;
+        width: min(1180px, calc(100% - 40px));
+        margin: 0 auto;
+      }
+
+      :global(.post-side-ad) {
+        position: sticky;
+        top: 5rem;
+        margin-top: 1.5rem;
+        min-height: 280px;
+      }
+
+      :global(.post-mobile-ad) {
+        margin: 2rem 0;
+      }
+
       .prose {
-        width: 720px;
-        max-width: calc(100% - 40px);
-        margin: auto;
+        width: 100%;
+        max-width: 720px;
+        margin: 0 auto;
         padding: 1.5rem 20px;
         color: var(--text);
       }
@@ -142,6 +167,11 @@ const jsonLd = {
           padding-top: 1.5rem;
         }
 
+        .post-layout {
+          display: block;
+          width: 100%;
+        }
+
         .prose {
           max-width: calc(100% - 40px);
           padding: 1.25rem 20px;
@@ -173,36 +203,42 @@ const jsonLd = {
             )
           }
         </div>
-        <div class="prose">
-          <div class="title">
-            <div class="date">
-              <FormattedDate date={pubDate} />
+        <div class="post-layout">
+          <GoogleAdSenseDisplay placement="desktop" class="post-side-ad" />
+          <div class="prose">
+            <div class="title">
+              <div class="date">
+                <FormattedDate date={pubDate} />
+                {
+                  updatedDate && (
+                    <div class="last-updated-on">
+                      Last updated on <FormattedDate date={updatedDate} />
+                    </div>
+                  )
+                }
+              </div>
+              <h1>{title}</h1>
               {
-                updatedDate && (
-                  <div class="last-updated-on">
-                    Last updated on <FormattedDate date={updatedDate} />
+                tags && tags.length > 0 && (
+                  <div class="post-tags">
+                    {tags.map((tag) => (
+                      <a
+                        class="post-tag"
+                        href={`/tags/${encodeURIComponent(tag)}/`}
+                      >
+                        #{tag}
+                      </a>
+                    ))}
                   </div>
                 )
               }
+              <hr />
             </div>
-            <h1>{title}</h1>
-            {
-              tags && tags.length > 0 && (
-                <div class="post-tags">
-                  {tags.map((tag) => (
-                    <a
-                      class="post-tag"
-                      href={`/tags/${encodeURIComponent(tag)}/`}
-                    >
-                      #{tag}
-                    </a>
-                  ))}
-                </div>
-              )
-            }
-            <hr />
+            <GoogleAdSenseDisplay placement="mobile" class="post-mobile-ad" />
+            <slot />
+            <GoogleAdSenseDisplay placement="mobile" class="post-mobile-ad" />
           </div>
-          <slot />
+          <GoogleAdSenseDisplay placement="desktop" class="post-side-ad" />
         </div>
       </article>
     </main>

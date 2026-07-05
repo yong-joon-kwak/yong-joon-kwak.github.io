@@ -4,6 +4,7 @@ import CustomHeadScripts from "../components/CustomHeadScripts.astro";
 import CustomBodyScripts from "../components/CustomBodyScripts.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import GoogleAdSenseDisplay from "../components/GoogleAdSenseDisplay.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import { getCollection } from "astro:content";
 import FormattedDate from "../components/FormattedDate.astro";
@@ -28,14 +29,41 @@ const tags = new Set(
     <CustomHeadScripts />
     <style>
       main {
-        width: min(1200px, calc(100% - 40px));
+        width: min(1520px, calc(100% - 40px));
         margin: 0 auto;
         padding: 2rem 20px 3rem;
         min-height: calc(100vh - 140px);
       }
 
+      .list-layout {
+        display: grid;
+        grid-template-columns:
+          minmax(120px, 160px)
+          minmax(0, 1200px)
+          minmax(120px, 160px);
+        gap: 1.5rem;
+        align-items: start;
+        justify-content: center;
+      }
+
       .content-wrapper {
+        width: 100%;
         padding: 0.5rem 0;
+      }
+
+      :global(.list-side-ad) {
+        position: sticky;
+        top: 5rem;
+        margin-top: 0.5rem;
+        min-height: 280px;
+      }
+
+      :global(.list-mobile-ad) {
+        margin: 0 0 1.5rem;
+      }
+
+      :global(.list-bottom-ad) {
+        margin: 1.5rem 0 0;
       }
 
       .visually-hidden {
@@ -204,6 +232,10 @@ const tags = new Set(
           padding: 1.5rem 20px 2.5rem;
         }
 
+        .list-layout {
+          display: block;
+        }
+
         .title {
           font-size: 1.2rem;
           line-height: 1.35;
@@ -249,58 +281,67 @@ const tags = new Set(
       <h1 class="visually-hidden">
         곽용준 개발 블로그 — 백엔드·PHP·Symfony 개발 기록과 경험
       </h1>
-      <div class="content-wrapper">
-        <div class="tag-container">
-          {
-            Array.from(tags).map((tag) => (
-              <button
-                type="button"
-                class="tag-button"
-                data-tag={tag}
-                aria-pressed="false"
-              >
-                {tag}
-              </button>
-            ))
-          }
-        </div>
-        <ul>
-          {
-            posts.map((post) => (
-              <li data-tags={JSON.stringify(post.data.tags ?? [])}>
-                <a href={`/${post.id}/`}>
-                  {post.data.heroImage && (
-                    <Image
-                      width={720}
-                      height={200}
-                      src={post.data.heroImage}
-                      alt=""
-                    />
-                  )}
-                  <div
-                    class:list={[
-                      "post-content",
-                      { "no-image": !post.data.heroImage },
-                    ]}
-                  >
-                    <h2 class="title">{post.data.title}</h2>
-                    <p class="date">
-                      <FormattedDate date={post.data.pubDate} />
-                    </p>
-                    <p class="description">{post.data.description}</p>
-                    {post.data.tags && post.data.tags.length > 0 && (
-                      <div class="post-tags">
-                        {post.data.tags.map((tag) => (
-                          <span class="post-tag">{tag}</span>
-                        ))}
-                      </div>
+      <div class="list-layout">
+        <GoogleAdSenseDisplay placement="desktop" class="list-side-ad" />
+        <div class="content-wrapper">
+          <div class="tag-container">
+            {
+              Array.from(tags).map((tag) => (
+                <button
+                  type="button"
+                  class="tag-button"
+                  data-tag={tag}
+                  aria-pressed="false"
+                >
+                  {tag}
+                </button>
+              ))
+            }
+          </div>
+          <GoogleAdSenseDisplay placement="mobile" class="list-mobile-ad" />
+          <ul>
+            {
+              posts.map((post) => (
+                <li data-tags={JSON.stringify(post.data.tags ?? [])}>
+                  <a href={`/${post.id}/`}>
+                    {post.data.heroImage && (
+                      <Image
+                        width={720}
+                        height={200}
+                        src={post.data.heroImage}
+                        alt=""
+                      />
                     )}
-                  </div>
-                </a>
-              </li>
-            ))
-          }
-        </ul>
+                    <div
+                      class:list={[
+                        "post-content",
+                        { "no-image": !post.data.heroImage },
+                      ]}
+                    >
+                      <h2 class="title">{post.data.title}</h2>
+                      <p class="date">
+                        <FormattedDate date={post.data.pubDate} />
+                      </p>
+                      <p class="description">{post.data.description}</p>
+                      {post.data.tags && post.data.tags.length > 0 && (
+                        <div class="post-tags">
+                          {post.data.tags.map((tag) => (
+                            <span class="post-tag">{tag}</span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+          <GoogleAdSenseDisplay
+            placement="mobile"
+            class="list-mobile-ad list-bottom-ad"
+          />
+        </div>
+        <GoogleAdSenseDisplay placement="desktop" class="list-side-ad" />
       </div>
     </main>
     <Footer />

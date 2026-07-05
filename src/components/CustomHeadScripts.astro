@@ -37,5 +37,6 @@ const initializeThemeScript = `(function() {
 {
   googleAdSenseAccount && (
     <meta name="google-adsense-account" content={googleAdSenseAccount} />
+    <script async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${googleAdSenseAccount}`} crossorigin="anonymous"></script>
   )
 }
